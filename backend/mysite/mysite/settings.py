@@ -73,10 +73,20 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
+# Connect to the database hosted on aws rds
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        "OPTIONS": {
+            "service": "rds",
+            "host": "jobbang.clua26kc4nl8.us-east-2.rds.amazonaws.com",
+            "port": 5432,
+            "name": "jobbang",
+            "user": "postgres",
+            "password": "postgres", #TODO: Hide this shit
+            "client_encoding": 'UTF8',
+            "default_transaction_isolation": 'read committed'
+    }
     }
 }
 
