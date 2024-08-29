@@ -9,7 +9,12 @@ TODO: Guide users through getting your code up and running on their own system. 
 4.	API references
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+TODO: Describe and show how to build your code and run the tests.
+
+# Installation de Angular
+1. Installer Node.js
+2. Après un clone, just run `npm install` pour installer les dépendances
+3. Pour lancer le serveur de développement, run `ng serve` et ouvrir un navigateur à l'adresse `http://localhost:4200/`
 
 # Contribute
 TODO: Explain how other users and developers can contribute to make your code better. 
