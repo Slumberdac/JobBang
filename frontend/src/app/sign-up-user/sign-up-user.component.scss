@@ -1,0 +1,38 @@
+@use "@angular/material" as mat;
+@use "./../../styles" as v;
+
+:host {
+  @extend .center-content;
+  flex-grow: 1;
+}
+.background-image {
+  @extend .fill-abs;
+  @extend .darkened-background-image;
+  background-image: url(https://www.bbplaw.attorney/wp-content/uploads/2022/06/corporate-governance.jpg);
+}
+
+.card {
+  width: 400px;
+  gap: 20px;
+}
+.header {
+  @extend .center-content;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.full-name {
+  display: flex;
+  gap: 20px;
+}
+
+.login{
+  font-size: 14px;
+  text-align: end;
+}
