@@ -9,19 +9,16 @@ import { LoginEnterpriseComponent } from './login-enterprise/login-enterprise.co
 import { EnterpriseDashboardComponent } from './enterprise-dashboard/enterprise-dashboard.component';
 
 export const routes: Routes = [
-  { path: '', component: UserHomeComponent },
+  {
+    path: '',
+    component: UserHomeComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'sign-up', component: SignUpUserComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'dashboard',
     component: UserHomeComponent,
-    canActivate: [AuthGuard],
-  },
-  { path: 'enterprise/sign-up', component: SignUpEnterpriseComponent },
-  { path: 'enterprise/login', component: LoginEnterpriseComponent },
-  {
-    path: 'enterprise/dashboard',
-    component: EnterpriseDashboardComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: 'dashboard' },
