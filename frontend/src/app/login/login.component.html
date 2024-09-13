@@ -1,1 +1,77 @@
-<p>login works!</p>
+<div class="background-image"></div>
+<div class="center-content">
+  <mat-card class="card">
+    <mat-card-header class="header">
+      <mat-card-title>Log in</mat-card-title>
+      <mat-card-subtitle
+        >Connect to your account
+        <div *ngIf="isAfterRegister" class="confirm-register">
+          Your account was registered successfuly
+        </div></mat-card-subtitle
+      >
+    </mat-card-header>
+    <mat-card-content class="form">
+      <form (submit)="login()">
+        <div>
+          <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              [formControl]="emailFormControl"
+              [errorStateMatcher]="matcher"
+            />
+            <mat-error
+              *ngIf="
+                emailFormControl.hasError('email') &&
+                !emailFormControl.hasError('required')
+              "
+              >Please enter a valid email address</mat-error
+            >
+          </mat-form-field>
+
+          <!--Do a style value to add a margin if there's an error-->
+          <mat-form-field class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              [formControl]="passwordFormControl"
+              [errorStateMatcher]="matcher"
+              [type]="passwordVisible ? 'text' : 'password'"
+            />
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              (click)="passwordVisible = !passwordVisible"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="!passwordVisible"
+            >
+              <mat-icon>{{
+                passwordVisible ? "visibility" : "visibility_off"
+              }}</mat-icon>
+            </button>
+            <mat-error *ngIf="passwordFormControl.hasError('required')"
+              >Password is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="passwordFormControl.hasError('pattern')"
+              >Password must contain at least 8 characters, including a number,
+              a lowercase letter, an uppercase letter and a special character
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="login()"
+        class="full-width"
+      >
+        Login
+      </button>
+      <mat-error>{{ unknownError }}</mat-error>
+      <div class="login">
+        Already have an account? <a routerLink="/login">Login</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

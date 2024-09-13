@@ -47,6 +47,9 @@
             <mat-error *ngIf="emailFormControl.hasError('required')"
               >Email is <strong>required</strong></mat-error
             >
+            <mat-error *ngIf="emailFormControl.hasError('emailTaken')">
+              Email is already in use
+            </mat-error>
           </mat-form-field>
 
           <!--Do a style value to add a margin if there's an error-->
@@ -92,7 +95,6 @@
               [formControl]="confirmPasswordFormControl"
               [errorStateMatcher]="confirmPasswordMatcher"
               [type]="confirmPasswordVisible ? 'text' : 'password'"
-              (ngModelChange)="test()"
             />
             <button
               type="button"
@@ -128,6 +130,7 @@
       >
         Sign up
       </button>
+      <mat-error>{{unknownError}}</mat-error>
       <div class="login">
         Already have an account? <a routerLink="/login">Login</a>
       </div>

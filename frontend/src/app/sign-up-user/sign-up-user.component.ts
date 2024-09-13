@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import validator from 'validator';
@@ -80,6 +80,7 @@ export class ConfirmPasswordErrorStateMatcher implements ErrorStateMatcher {
 export class SignUpUserComponent {
   //Create the services
   private remoteService: RemoteService = new RemoteService();
+  private router: Router = new Router();
 
   //Form Controls
   emailFormControl = new FormControl('', [
@@ -118,16 +119,15 @@ export class SignUpUserComponent {
   //Variables
   passwordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
-  unknownError: string = 'asd';
+  unknownError: string = '';
 
   constructor() {}
 
   signUpUser() {
-    this.emailFormControl.updateValueAndValidity();
-    this.emailFormControl.markAsTouched();
     markAllAsTouched(this.formGroup);
     markAllAsTouched(this.passwordGroup);
     if (getAllErrorsInFormGroup(this.formGroup).length == 0) {
+      console.log('registering user');
       // Call the service to sign up the user
       const user: User = {
         email: this.emailFormControl.value ?? '',
@@ -138,17 +138,20 @@ export class SignUpUserComponent {
       this.remoteService.register(user).then((success) => {
         if (success.success) {
           this.navigateToLogin();
+        } else if (success.errors) {
+          if (success.errors['email']) {
+            this.emailFormControl.setErrors({ emailTaken: true });
+          }
         } else {
-          this.unknownError = success;
+          this.unknownError =
+            'There was an unknown error, please try again later';
         }
       });
     }
   }
-  checkPasswordStrength() {}
   navigateToLogin() {
-    //Navigate to the login page
-  }
-  test() {
-    console.log(this.passwordGroup.errors?.['PasswordsDontMatch']);
+    this.router.navigate(['/login'], {
+      state: { email: this.emailFormControl.value },
+    });
   }
 }

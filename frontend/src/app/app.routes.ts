@@ -24,5 +24,4 @@ export const routes: Routes = [
     component: EnterpriseDashboardComponent,
     canActivate: [AuthGuard],
   },
-  { path: '**', redirectTo: '' },
 ];

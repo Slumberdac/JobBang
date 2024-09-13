@@ -42,8 +42,8 @@ export class MockDBService {
 
   addUser(user: User): Promise<RemoteAnswers> {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (this.getUserByEmail(user.email) !== undefined) {
+      setTimeout(async () => {
+        if ((await this.getUserByEmail(user.email)) !== undefined) {
           resolve({
             success: false,
             data: '',
