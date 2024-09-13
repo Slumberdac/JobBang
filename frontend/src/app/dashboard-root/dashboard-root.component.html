@@ -1,0 +1,6 @@
+<div *ngIf="!user?.isCandidate">
+  <app-dashboard-enterprise />
+</div>
+<div *ngIf="user?.isCandidate">
+  <app-dashboard-user />
+</div>

@@ -134,6 +134,7 @@ export class SignUpUserComponent {
         firstName: this.firstNameFormControl.value ?? '',
         lastName: this.lastNameFormControl.value ?? '',
         password: this.passwordFormControl.value ?? '',
+        isCandidate: true,
       };
       this.remoteService.register(user).then((success) => {
         if (success.success) {

@@ -1,18 +1,30 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { UserHomeComponent } from './user-home/user-home.component';
-import { SignUpEnterpriseComponent } from './sign-up-enterprise/sign-up-enterprise.component';
 import { SignUpUserComponent } from './sign-up-user/sign-up-user.component';
-import { LoginEnterpriseComponent } from './login-enterprise/login-enterprise.component';
-import { EnterpriseDashboardComponent } from './enterprise-dashboard/enterprise-dashboard.component';
+import { AppRootComponent } from './app-root/app-root.component';
+import { DashboardRootComponent } from './dashboard-root/dashboard-root.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: UserHomeComponent,
+    component: AppRootComponent,
     canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardRootComponent,
+      },
+      {
+        path: 'add-offer',
+        component: UserHomeComponent,
+      },
+      {
+        path: 'offers',
+        component: UserHomeComponent,
+      },
+    ],
   },
   { path: 'sign-up', component: SignUpUserComponent },
   { path: 'login', component: LoginComponent },
