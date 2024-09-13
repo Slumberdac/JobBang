@@ -9,7 +9,6 @@ import { LoginEnterpriseComponent } from './login-enterprise/login-enterprise.co
 import { EnterpriseDashboardComponent } from './enterprise-dashboard/enterprise-dashboard.component';
 
 export const routes: Routes = [
-  { path: '', component: LandingPageComponent },
   { path: 'sign-up', component: SignUpUserComponent },
   { path: 'login', component: LoginComponent },
   {
