@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
@@ -6,10 +6,12 @@ import {
   Router,
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { WINDOW } from '../constants/window.const';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  private localStorage = inject(WINDOW).localStorage;
   constructor(private router: Router) {}
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -24,7 +26,7 @@ export class AuthGuard implements CanActivate {
   }
   public isLoggedIn(): boolean {
     let status = false;
-    if (localStorage.getItem('isLoggedIn') == 'true') {
+    if (this.localStorage.getItem('isLoggedIn') == 'true') {
       status = true;
     } else {
       status = false;
