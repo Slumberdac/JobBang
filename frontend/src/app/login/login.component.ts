@@ -22,6 +22,7 @@ import {
   getAllErrorsInFormGroup,
   markAllAsTouched,
 } from '../utils/formgroup.util';
+import { getWindow } from '../utils/injectable.util';
 
 @Component({
   selector: 'app-login',
@@ -43,8 +44,9 @@ import {
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  private window = inject(WINDOW);
+  private window = getWindow();
   private remoteService = new RemoteService();
+  private router = new Router();
 
   emailFormControl = new FormControl('', [Validators.required]);
   passwordFormControl = new FormControl('', [Validators.required]);
@@ -57,11 +59,16 @@ export class LoginComponent {
   matcher = new MyErrorStateMatcher();
   passwordVisible = false;
   isAfterRegister = false;
+  loginError: string = '';
   unknownError = '';
   constructor() {
+    this.getStateSent();
+  }
+
+  getStateSent() {
     // Get the value that was sent from the sign-up page
-    const navigation = this.window.history.state;
-    if (navigation) {
+    const navigation = this.window?.history.state;
+    if (navigation && navigation.email) {
       console.log(navigation);
       this.emailFormControl.setValue(navigation.email);
       this.isAfterRegister = true;
@@ -69,6 +76,7 @@ export class LoginComponent {
   }
 
   login() {
+    console.log('login');
     markAllAsTouched(this.formGroup);
     if (getAllErrorsInFormGroup(this.formGroup).length > 0) {
       return;
@@ -79,6 +87,17 @@ export class LoginComponent {
         password: this.passwordFormControl.value ?? '',
       })
       .then((response) => {
+        if (response.success) {
+          this.window?.localStorage.setItem('isLoggedIn', 'true');
+          this.window?.localStorage.setItem(
+            'user',
+            JSON.stringify(response.data)
+          );
+          this.window?.dispatchEvent(new Event('sessionDataUpdated'));
+          this.router.navigate(['/dashboard']);
+        } else if (response.errors) {
+          this.loginError = response.errors['email'] ?? '';
+        }
         console.log(response);
       });
   }

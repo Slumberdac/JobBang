@@ -7,11 +7,12 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { WINDOW } from '../constants/window.const';
+import { getLocalStorage } from '../utils/injectable.util';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  private localStorage = inject(WINDOW).localStorage;
+  private localStorage = getLocalStorage();
   constructor(private router: Router) {}
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -26,7 +27,7 @@ export class AuthGuard implements CanActivate {
   }
   public isLoggedIn(): boolean {
     let status = false;
-    if (this.localStorage.getItem('isLoggedIn') == 'true') {
+    if (this.localStorage?.getItem('isLoggedIn') == 'true') {
       status = true;
     } else {
       status = false;

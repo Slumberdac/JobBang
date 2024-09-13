@@ -1,10 +1,12 @@
-import { inject, Injectable } from '@angular/core';
+import { Inject, inject, Injectable } from '@angular/core';
 import { User, UserLogin } from '../interfaces/user.interface';
 import { WINDOW } from '../constants/window.const';
 import {
   RemoteAnswers,
   RemoteErrors,
 } from '../interfaces/remote-answers.interface';
+import { DOCUMENT } from '@angular/common';
+import { getWindow } from '../utils/injectable.util';
 
 /**
  * This service will be used to mock the database
@@ -13,19 +15,21 @@ import {
   providedIn: 'root',
 })
 export class MockDBService {
-  private _window: Window = inject(WINDOW);
+  private window = getWindow();
+  private localStorage = this.window?.localStorage;
   users: User[] = [];
 
   constructor() {
     // Adds an event listener to the window object that will listen for update requests
-    this._window.addEventListener('updateDB', (event) => {
+    this.window?.addEventListener('updateDB', (event) => {
       this.updateDB();
     });
+    this.updateDB();
   }
 
   updateDB() {
     //Get the users from the local storage
-    const users = localStorage.getItem('users') ?? '';
+    const users = this.localStorage?.getItem('users') ?? '';
 
     // Parse all data from the local storage
     try {
@@ -36,11 +40,11 @@ export class MockDBService {
   }
 
   updateLocalStorage() {
-    localStorage.setItem('users', JSON.stringify(this.users));
-    this._window.dispatchEvent(new Event('updateDB'));
+    this.localStorage?.setItem('users', JSON.stringify(this.users));
+    this.window?.dispatchEvent(new Event('updateDB'));
   }
 
-  addUser(user: User): Promise<RemoteAnswers> {
+  addUser(user: User): Promise<RemoteAnswers<string>> {
     return new Promise((resolve, reject) => {
       setTimeout(async () => {
         if ((await this.getUserByEmail(user.email)) !== undefined) {
@@ -59,9 +63,12 @@ export class MockDBService {
   }
 
   getUserByEmail(email: string): Promise<User | undefined> {
+    console.log(email);
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const user = this.users.find((u) => u.email === email);
+        const user = this.users.find((u) => {
+          return u.email.toLowerCase() === email.toLowerCase();
+        });
         resolve(user);
       }, 1000);
     });

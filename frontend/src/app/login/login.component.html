@@ -11,7 +11,7 @@
       >
     </mat-card-header>
     <mat-card-content class="form">
-      <form (submit)="login()">
+      <form (submit)="login()" onsubmit="login()">
         <div>
           <mat-form-field class="full-width">
             <mat-label>Email</mat-label>
@@ -20,12 +20,8 @@
               [formControl]="emailFormControl"
               [errorStateMatcher]="matcher"
             />
-            <mat-error
-              *ngIf="
-                emailFormControl.hasError('email') &&
-                !emailFormControl.hasError('required')
-              "
-              >Please enter a valid email address</mat-error
+            <mat-error *ngIf="emailFormControl.hasError('required')"
+              >Email is <strong>required</strong></mat-error
             >
           </mat-form-field>
 
@@ -53,10 +49,6 @@
             <mat-error *ngIf="passwordFormControl.hasError('required')"
               >Password is <strong>required</strong></mat-error
             >
-            <mat-error *ngIf="passwordFormControl.hasError('pattern')"
-              >Password must contain at least 8 characters, including a number,
-              a lowercase letter, an uppercase letter and a special character
-            </mat-error>
           </mat-form-field>
         </div>
       </form>
@@ -68,9 +60,10 @@
       >
         Login
       </button>
+      <mat-error *ngIf="loginError">{{ loginError }}</mat-error>
       <mat-error>{{ unknownError }}</mat-error>
       <div class="login">
-        Already have an account? <a routerLink="/login">Login</a>
+        Don't have an account? <a routerLink="/sign-up">Sign-up</a>
       </div>
     </mat-card-content>
   </mat-card>
