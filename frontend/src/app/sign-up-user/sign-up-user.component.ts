@@ -27,6 +27,8 @@ import {
 } from '../utils/formgroup.util';
 import { RemoteService } from '../services/remote.service';
 import { User } from '../interfaces/user.interface';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatStepperModule } from '@angular/material/stepper';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -73,6 +75,8 @@ export class ConfirmPasswordErrorStateMatcher implements ErrorStateMatcher {
     MatCheckboxModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatButtonToggleModule,
+    MatStepperModule,
   ],
   templateUrl: './sign-up-user.component.html',
   styleUrl: './sign-up-user.component.scss',
@@ -104,13 +108,20 @@ export class SignUpUserComponent {
     },
     { validators: confirmPasswordValidator }
   );
-  formGroup = new FormGroup({
+  firstFormGroup = new FormGroup({
     email: this.emailFormControl,
     firstName: this.firstNameFormControl,
     lastName: this.lastNameFormControl,
     acceptConditions: this.acceptConditionsFormControl,
     passwordGroup: this.passwordGroup,
   });
+
+  accountTypeFormControl = new FormControl('', [Validators.required]);
+  secondFormGroup = new FormGroup({
+    isCandidate: this.accountTypeFormControl,
+  });
+
+
 
   //Error State Matchers
   matcher = new MyErrorStateMatcher();
@@ -124,9 +135,9 @@ export class SignUpUserComponent {
   constructor() {}
 
   signUpUser() {
-    markAllAsTouched(this.formGroup);
+    markAllAsTouched(this.firstFormGroup);
     markAllAsTouched(this.passwordGroup);
-    if (getAllErrorsInFormGroup(this.formGroup).length == 0) {
+    if (getAllErrorsInFormGroup(this.firstFormGroup).length == 0) {
       console.log('registering user');
       // Call the service to sign up the user
       const user: User = {
@@ -134,7 +145,7 @@ export class SignUpUserComponent {
         firstName: this.firstNameFormControl.value ?? '',
         lastName: this.lastNameFormControl.value ?? '',
         password: this.passwordFormControl.value ?? '',
-        isCandidate: true,
+        isCandidate: this.accountTypeFormControl.value === 'candidate',
       };
       this.remoteService.register(user).then((success) => {
         if (success.success) {

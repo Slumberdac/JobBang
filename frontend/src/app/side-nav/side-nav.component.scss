@@ -1,0 +1,45 @@
+@use "./../../styles" as v;
+:host {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.side-nav-container {
+  width: 100%;
+}
+.side-nav {
+  outline: 1px solid #ccc;
+  border: 0px;
+  height: 100vh;
+  overflow: hidden;
+  border-radius: 0px;
+  box-sizing: border-box;
+}
+.side-nav-button {
+  @extend .center-content;
+  outline: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 0px;
+  overflow: hidden;
+  height: 50px;
+  max-width: inherit;
+  min-width: inherit;
+}
+
+.side-nav-icon {
+  margin-right: 0px;
+}
+
+.side-nav-button-text {
+  font-size: 14px;
+  margin-left: 10px;
+}
+.side-nav-divider {
+  flex-grow: 1;
+}
+
+.side-nav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

@@ -32,4 +32,11 @@ export class AuthService {
       this.userInfo = undefined;
     }
   }
+
+  logout() {
+    this.localStorage?.setItem('isLoggedIn', 'false');
+    this.localStorage?.removeItem('user');
+    this.isLoggedIn = false;
+    this.userInfo = undefined;
+  }
 }

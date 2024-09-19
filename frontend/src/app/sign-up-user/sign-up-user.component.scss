@@ -12,7 +12,7 @@
 }
 
 .card {
-  width: 400px;
+  width:600px;
   gap: 20px;
 }
 .header {
@@ -32,7 +32,25 @@
   gap: 20px;
 }
 
-.login{
+.login {
   font-size: 14px;
   text-align: end;
+}
+
+.form-field-title {
+  font-size: 14px;
+  margin-left: 14px;
+}
+.account-type-toggle {
+  display: inline-block;
+}
+.account-type-toggle > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+.account-type-toggle img {
+  width: 100px;
+  height: 100px;
 }

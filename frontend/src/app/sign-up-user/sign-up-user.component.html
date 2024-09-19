@@ -1,139 +1,215 @@
 <div class="background-image"></div>
 <div class="center-content">
   <mat-card class="card">
-    <mat-card-header class="header">
-      <mat-card-title>Sign up</mat-card-title>
-      <mat-card-subtitle>Create an account for free</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content class="form">
-      <form [formGroup]="passwordGroup" (submit)="signUpUser()">
-        <div>
-          <div class="full-name">
-            <mat-form-field class="full-width">
-              <mat-label>First name</mat-label>
-              <input
-                matInput
-                [formControl]="firstNameFormControl"
-                [errorStateMatcher]="matcher"
-              /><mat-error *ngIf="firstNameFormControl.hasError('required')"
-                >First name is <strong>required</strong></mat-error
-              >
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <mat-label>Last name</mat-label>
-              <input
-                matInput
-                [formControl]="lastNameFormControl"
-                [errorStateMatcher]="matcher"
-              /><mat-error *ngIf="lastNameFormControl.hasError('required')"
-                >Last name is <strong>required</strong></mat-error
-              >
-            </mat-form-field>
-          </div>
-          <mat-form-field class="full-width">
-            <mat-label>Email</mat-label>
-            <input
-              matInput
-              [formControl]="emailFormControl"
-              [errorStateMatcher]="matcher"
-            />
-            <mat-error
-              *ngIf="
-                emailFormControl.hasError('email') &&
-                !emailFormControl.hasError('required')
-              "
-              >Please enter a valid email address</mat-error
-            >
-            <mat-error *ngIf="emailFormControl.hasError('required')"
-              >Email is <strong>required</strong></mat-error
-            >
-            <mat-error *ngIf="emailFormControl.hasError('emailTaken')">
-              Email is already in use
-            </mat-error>
-          </mat-form-field>
+    <mat-stepper [linear]="true" #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <ng-template matStepLabel>Fill out your information</ng-template>
+        <mat-card-header class="header">
+          <mat-card-title>Sign up</mat-card-title>
+          <mat-card-subtitle>Create an account for free</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="form">
+          <form [formGroup]="passwordGroup" (submit)="signUpUser()">
+            <div>
+              <div class="full-name">
+                <mat-form-field class="full-width">
+                  <mat-label>First name</mat-label>
+                  <input
+                    matInput
+                    [formControl]="firstNameFormControl"
+                    [errorStateMatcher]="matcher"
+                  /><mat-error *ngIf="firstNameFormControl.hasError('required')"
+                    >First name is <strong>required</strong></mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                  <mat-label>Last name</mat-label>
+                  <input
+                    matInput
+                    [formControl]="lastNameFormControl"
+                    [errorStateMatcher]="matcher"
+                  /><mat-error *ngIf="lastNameFormControl.hasError('required')"
+                    >Last name is <strong>required</strong></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <mat-form-field class="full-width">
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  [formControl]="emailFormControl"
+                  [errorStateMatcher]="matcher"
+                />
+                <mat-error
+                  *ngIf="
+                    emailFormControl.hasError('email') &&
+                    !emailFormControl.hasError('required')
+                  "
+                  >Please enter a valid email address</mat-error
+                >
+                <mat-error *ngIf="emailFormControl.hasError('required')"
+                  >Email is <strong>required</strong></mat-error
+                >
+                <mat-error *ngIf="emailFormControl.hasError('emailTaken')">
+                  Email is already in use
+                </mat-error>
+              </mat-form-field>
 
-          <!--Do a style value to add a margin if there's an error-->
-          <mat-form-field
-            class="full-width"
-            [ngStyle]="{
-              marginBottom: passwordFormControl.hasError('pattern')
-                ? '35px'
-                : '0px'
-            }"
+              <!--Do a style value to add a margin if there's an error-->
+              <mat-form-field
+                class="full-width"
+                [ngStyle]="{
+                  marginBottom: passwordFormControl.hasError('pattern')
+                    ? '35px'
+                    : '0px'
+                }"
+              >
+                <mat-label>Password</mat-label>
+                <input
+                  matInput
+                  [formControl]="passwordFormControl"
+                  [errorStateMatcher]="matcher"
+                  [type]="passwordVisible ? 'text' : 'password'"
+                />
+                <button
+                  type="button"
+                  mat-icon-button
+                  matSuffix
+                  (click)="passwordVisible = !passwordVisible"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="!passwordVisible"
+                >
+                  <mat-icon>{{
+                    passwordVisible ? "visibility" : "visibility_off"
+                  }}</mat-icon>
+                </button>
+                <mat-error *ngIf="passwordFormControl.hasError('required')"
+                  >Password is <strong>required</strong></mat-error
+                >
+                <mat-error *ngIf="passwordFormControl.hasError('pattern')"
+                  >Password must contain at least 8 characters, including a
+                  number, a lowercase letter, an uppercase letter and a special
+                  character
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <mat-label>Confirm password</mat-label>
+                <input
+                  matInput
+                  [formControl]="confirmPasswordFormControl"
+                  [errorStateMatcher]="confirmPasswordMatcher"
+                  [type]="confirmPasswordVisible ? 'text' : 'password'"
+                />
+                <button
+                  type="button"
+                  mat-icon-button
+                  matSuffix
+                  (click)="confirmPasswordVisible = !confirmPasswordVisible"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="!confirmPasswordVisible"
+                >
+                  <mat-icon>{{
+                    confirmPasswordVisible ? "visibility" : "visibility_off"
+                  }}</mat-icon>
+                </button>
+                <mat-error *ngIf="passwordGroup.errors?.['PasswordsDontMatch']">
+                  Passwords do not match
+                </mat-error>
+                <mat-error
+                  *ngIf="confirmPasswordFormControl.hasError('required') && !confirmPasswordFormControl.hasError('pattern') && !passwordGroup.errors?.['PasswordsDontMatch']"
+                  >Password is <strong>required</strong></mat-error
+                >
+              </mat-form-field>
+              <!--Field to confirm confitions-->
+              <mat-checkbox [formControl]="acceptConditionsFormControl">
+                I accept the <a href="#">terms and conditions</a>
+              </mat-checkbox>
+            </div>
+          </form>
+          <button mat-button matStepperNext>Next</button>
+          <mat-error>{{ unknownError }}</mat-error>
+          <div class="login">
+            Already have an account? <a routerLink="/login">Login</a>
+          </div>
+        </mat-card-content> </mat-step
+      ><mat-step [stepControl]="secondFormGroup">
+        <ng-template matStepLabel>Choose your account type</ng-template>
+        <mat-card-header class="header">
+          <mat-card-title>Choose your account type</mat-card-title>
+          <mat-card-subtitle
+            >Why do you want to use this application?</mat-card-subtitle
           >
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              [formControl]="passwordFormControl"
-              [errorStateMatcher]="matcher"
-              [type]="passwordVisible ? 'text' : 'password'"
-            />
-            <button
-              type="button"
-              mat-icon-button
-              matSuffix
-              (click)="passwordVisible = !passwordVisible"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="!passwordVisible"
-            >
-              <mat-icon>{{
-                passwordVisible ? "visibility" : "visibility_off"
-              }}</mat-icon>
-            </button>
-            <mat-error *ngIf="passwordFormControl.hasError('required')"
-              >Password is <strong>required</strong></mat-error
-            >
-            <mat-error *ngIf="passwordFormControl.hasError('pattern')"
-              >Password must contain at least 8 characters, including a number,
-              a lowercase letter, an uppercase letter and a special character
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <mat-label>Confirm password</mat-label>
-            <input
-              matInput
-              [formControl]="confirmPasswordFormControl"
-              [errorStateMatcher]="confirmPasswordMatcher"
-              [type]="confirmPasswordVisible ? 'text' : 'password'"
-            />
-            <button
-              type="button"
-              mat-icon-button
-              matSuffix
-              (click)="confirmPasswordVisible = !confirmPasswordVisible"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="!confirmPasswordVisible"
-            >
-              <mat-icon>{{
-                confirmPasswordVisible ? "visibility" : "visibility_off"
-              }}</mat-icon>
-            </button>
-            <mat-error *ngIf="passwordGroup.errors?.['PasswordsDontMatch']">
-              Passwords do not match
-            </mat-error>
-            <mat-error
-              *ngIf="confirmPasswordFormControl.hasError('required') && !confirmPasswordFormControl.hasError('pattern') && !passwordGroup.errors?.['PasswordsDontMatch']"
-              >Password is <strong>required</strong></mat-error
-            >
-          </mat-form-field>
-          <!--Field to confirm confitions-->
-          <mat-checkbox [formControl]="acceptConditionsFormControl">
-            I accept the <a href="#">terms and conditions</a>
-          </mat-checkbox>
-        </div>
-      </form>
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="signUpUser()"
-        class="full-width"
-      >
-        Sign up
-      </button>
-      <mat-error>{{unknownError}}</mat-error>
-      <div class="login">
-        Already have an account? <a routerLink="/login">Login</a>
-      </div>
-    </mat-card-content>
+        </mat-card-header>
+        <mat-card-content class="form">
+          <form [formGroup]="passwordGroup" (submit)="signUpUser()">
+            <div>
+              <div class="form-field-title">You are:</div>
+              <mat-button-toggle-group
+                name="fontStyle"
+                aria-label="Font Style"
+                class="full-width"
+                [formControl]="accountTypeFormControl"
+              >
+                <mat-button-toggle
+                  value="employer"
+                  class="full-width toggle-button"
+                  ><div class="account-type-toggle">
+                    <div>
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/7237/7237991.png"
+                        alt="employer-icon"
+                      />
+                      An employer
+                    </div>
+                  </div></mat-button-toggle
+                >
+                <mat-button-toggle
+                  value="candidate"
+                  class="full-width toggle-button"
+                  ><div class="account-type-toggle">
+                    <div>
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/4151/4151385.png"
+                        alt="employer-icon"
+                      />
+                      A candidate
+                    </div>
+                  </div></mat-button-toggle
+                >
+              </mat-button-toggle-group>
+            </div>
+          </form>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </mat-card-content> </mat-step
+      ><mat-step [stepControl]="firstFormGroup">
+        <ng-template matStepLabel>Validate</ng-template>
+        <mat-card-header class="header">
+          <mat-card-title>Validation</mat-card-title>
+          <mat-card-subtitle
+            >You're all ready to go! <br />
+            Please confirm the information below</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content class="form">
+          <div>
+            Your name : {{ firstNameFormControl.value }} {{ lastNameFormControl.value }}
+            <br />
+            Your email : {{ emailFormControl.value }}
+            <br />
+            Your account type : {{ accountTypeFormControl.value }}
+          </div>
+
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="signUpUser()"
+            class="full-width"
+          >
+            Sign up
+          </button>
+        </mat-card-content>
+      </mat-step>
+    </mat-stepper>
   </mat-card>
 </div>

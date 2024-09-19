@@ -1,0 +1,30 @@
+<div
+  class="sidenav"
+  class="side-nav"
+  [ngStyle]="{ width: isOpen ? '200px' : '50px' }"
+>
+  <div
+    [ngStyle]="{
+      maxWidth: isOpen ? '200px' : '50px',
+      minWidth: isOpen ? '200px' : '50px',
+      width:'0px',
+    }"
+    class="side-nav-content"
+  >
+    <button mat-button (click)="isOpen = !isOpen" class="side-nav-button">
+      <div class="side-nav-button-text" *ngIf="isOpen">Menu</div>
+      <mat-icon class="side-nav-icon">menu</mat-icon>
+    </button>
+    <button mat-button (click)="navigateToDashboard()" class="side-nav-button">
+      <div class="side-nav-button-text" *ngIf="isOpen">Dashboard</div>
+      <mat-icon class="side-nav-icon">dashboard</mat-icon>
+    </button>
+    <app-side-nav-candidate *ngIf="user?.isCandidate" [isOpen]="isOpen" />
+    <app-side-nav-employer *ngIf="!user?.isCandidate" [isOpen]="isOpen" />
+    <div class="side-nav-divider"></div>
+    <button mat-button (click)="logout()" class="side-nav-button">
+      <div class="side-nav-button-text" *ngIf="isOpen">Logout</div>
+      <mat-icon class="side-nav-icon">exit_to_app</mat-icon>
+    </button>
+  </div>
+</div>
