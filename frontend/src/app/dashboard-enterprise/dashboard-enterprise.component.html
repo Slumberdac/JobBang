@@ -1,1 +1,15 @@
-<p>dashboard-enterprise works!</p>
+<div class="dashboard-header">
+  <h1 class="dashboard-title">
+    Welcome to JobBang &nbsp;
+    <span class="dashboard-full-user-name">
+      {{ user?.firstName }}
+    </span>
+    !
+  </h1>
+  <h4>What do you want to do today?</h4>
+</div>
+<div class="dashboard-actions">
+  <button mat-raised-button color="primary" routerLink="/offers/new">
+    Add a new job offer
+  </button>
+</div>
