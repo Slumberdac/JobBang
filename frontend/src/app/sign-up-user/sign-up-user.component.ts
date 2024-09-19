@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -28,7 +28,7 @@ import {
 import { RemoteService } from '../services/remote.service';
 import { User } from '../interfaces/user.interface';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -85,6 +85,7 @@ export class SignUpUserComponent {
   //Create the services
   private remoteService: RemoteService = new RemoteService();
   private router: Router = new Router();
+  @ViewChild('stepper') private myStepper: MatStepper | undefined;
 
   //Form Controls
   emailFormControl = new FormControl('', [
@@ -121,8 +122,6 @@ export class SignUpUserComponent {
     isCandidate: this.accountTypeFormControl,
   });
 
-
-
   //Error State Matchers
   matcher = new MyErrorStateMatcher();
   confirmPasswordMatcher = new ConfirmPasswordErrorStateMatcher();
@@ -138,7 +137,6 @@ export class SignUpUserComponent {
     markAllAsTouched(this.firstFormGroup);
     markAllAsTouched(this.passwordGroup);
     if (getAllErrorsInFormGroup(this.firstFormGroup).length == 0) {
-      console.log('registering user');
       // Call the service to sign up the user
       const user: User = {
         email: this.emailFormControl.value ?? '',
@@ -153,6 +151,9 @@ export class SignUpUserComponent {
         } else if (success.errors) {
           if (success.errors['email']) {
             this.emailFormControl.setErrors({ emailTaken: true });
+            if (this.myStepper) {
+              this.myStepper.selectedIndex = 0;
+            }
           }
         } else {
           this.unknownError =

@@ -126,7 +126,7 @@
               </mat-checkbox>
             </div>
           </form>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-flat-button matStepperNext>Next</button>
           <mat-error>{{ unknownError }}</mat-error>
           <div class="login">
             Already have an account? <a routerLink="/login">Login</a>
@@ -179,8 +179,8 @@
               </mat-button-toggle-group>
             </div>
           </form>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-flat-button matStepperPrevious>Back</button>
+          <button mat-flat-button matStepperNext>Next</button>
         </mat-card-content> </mat-step
       ><mat-step [stepControl]="firstFormGroup">
         <ng-template matStepLabel>Validate</ng-template>
