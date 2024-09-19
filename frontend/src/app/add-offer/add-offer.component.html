@@ -1,1 +1,45 @@
-<p>add-offer works!</p>
+<mat-card class="add-offer-card">
+  <mat-card-header>
+    <mat-card-title>Add Offer</mat-card-title>
+    <mat-card-subtitle>Fill out the form to add an offer</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="offerForm" (submit)="addOffer()">
+      <mat-form-field class="full-width">
+        <mat-label>Offer title</mat-label>
+        <input matInput formControlName="title" />
+        <mat-error *ngIf="offerForm.get('title')?.hasError('required')"
+          >Offer title is <strong>required</strong></mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Offer description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+        <mat-error *ngIf="offerForm.get('description')?.hasError('required')"
+          >Offer description is <strong>required</strong></mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Associated email</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error *ngIf="offerForm.get('email')?.hasError('required')"
+          >Associated email is <strong>required</strong></mat-error
+        >
+        <mat-error *ngIf="offerForm.get('email')?.hasError('email')"
+          >Please enter a valid email address</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Associated phone</mat-label>
+        <input matInput formControlName="phone" />
+        <mat-error *ngIf="offerForm.get('phone')?.hasError('required')"
+          >Associated phone is <strong>required</strong></mat-error
+        >
+        <mat-error *ngIf="offerForm.get('phone')?.hasError('pattern')"
+          >Please enter a valid phone number</mat-error
+        >
+      </mat-form-field>
+      <button mat-flat-button color="primary" type="submit">Add offer</button>
+    </form>
+  </mat-card-content>
+</mat-card>

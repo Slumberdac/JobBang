@@ -1,0 +1,9 @@
+@use "./../../styles" as v;
+:host {
+  @extend .center-content;
+  flex-grow: 1;
+}
+.add-offer-card {
+  width: 300px;
+  outline: 1px solid #CCC;
+}

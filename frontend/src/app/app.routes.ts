@@ -6,6 +6,7 @@ import { SignUpUserComponent } from './sign-up-user/sign-up-user.component';
 import { AppRootComponent } from './app-root/app-root.component';
 import { DashboardRootComponent } from './dashboard-root/dashboard-root.component';
 import { EmployerGuard } from './guards/employer.guard';
+import { AddOfferComponent } from './add-offer/add-offer.component';
 
 export const routes: Routes = [
   {
@@ -19,7 +20,7 @@ export const routes: Routes = [
       },
       {
         path: 'offers/new',
-        component: UserHomeComponent,
+        component: AddOfferComponent,
         canActivate: [EmployerGuard],
       },
     ],

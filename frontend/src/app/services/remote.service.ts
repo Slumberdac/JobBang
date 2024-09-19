@@ -3,6 +3,7 @@ import { User, UserLogin } from '../interfaces/user.interface';
 import { register } from 'module';
 import { MockDBService } from './mockdb.service';
 import { RemoteAnswers } from '../interfaces/remote-answers.interface';
+import { Offer } from '../interfaces/offer.interface';
 
 /**
  * For now this will be mocked, but in the future this will be used to make remote calls to the server
@@ -43,6 +44,22 @@ export class RemoteService {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(this.mockDB.addUser(user));
+      }, 1000);
+    });
+  }
+
+  addOffer(offer:Offer):Promise<RemoteAnswers<string>> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.mockDB.addOffer(offer));
+      }, 1000);
+    });
+  }
+
+  getOffers():Promise<RemoteAnswers<Offer[]>> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.mockDB.getOffers());
       }, 1000);
     });
   }
