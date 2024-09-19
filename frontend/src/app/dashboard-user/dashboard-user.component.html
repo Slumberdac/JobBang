@@ -1,3 +1,41 @@
 <div class="dashboard-header">
-  Welcome {{ user?.firstName }} {{ user?.lastName }} !
+  <h1 class="dashboard-title">
+    Welcome to JobBang &nbsp;
+    <span class="dashboard-full-user-name">
+      {{ user?.firstName }}
+    </span>
+    !
+  </h1>
+  <h4>Here are the latest job offers for you:</h4>
 </div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef>Title</th>
+    <td mat-cell *matCellDef="let offer">{{ offer.title }}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let offer">{{ offer.email }}</td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef>Phone</th>
+    <td mat-cell *matCellDef="let offer">{{ offer.phone }}</td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef>Description</th>
+    <td mat-cell *matCellDef="let offer">{{ offer.description }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
