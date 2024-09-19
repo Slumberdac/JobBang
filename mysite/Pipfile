@@ -4,8 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+django = "*"
+djangorestframework = "*"
+psycopg2-binary = "*"
+psycopg = "*"
 
 [dev-packages]
+isort = {extras = ["requirements_deprecated_finder"], version = "*"}
+pylint = "*"
+pymarkdown = "*"
+codespell = "*"
 
 [requires]
-python_version = "3.12"
+python_version = "3.11"
