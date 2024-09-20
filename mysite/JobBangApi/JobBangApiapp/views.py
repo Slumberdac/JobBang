@@ -12,35 +12,85 @@ from . import models
 
 @api_view(["GET"])
 def index(request: HttpRequest):
-    User.objects.get(username="fougeresjacob@gmail.com").delete()
-    with connection.cursor() as cursor:
-        cursor.execute("DELETE FROM users WHERE email = 'fougeresjacob@gmail.com'")
     return Response("Hello, world!")
 
 
-# get user
+# get users
 @api_view(["GET"])
 def read_users(request: HttpRequest):
-    return Response("Hello, users!")
+    query = "SELECT * FROM users;"
+
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(query)
+            users = cursor.fetchall()
+            # Assuming the cursor returns a list of dictionaries
+            return Response(to_json(models.response(success=True, data=users)))
+        except Error as e:
+            return Response({"error": str(e)}, status=500)
 
 
 # return individual user
 @api_view(["GET"])
 def read_user(request: HttpRequest, id: int):
-    return Response(f"Hello, user {id}!")
+    query = "SELECT * FROM users WHERE id = %s;"
 
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(query, [id])
+            user = cursor.fetchone()
+            if user:
+                return Response(to_json(models.response(success=True, data=user)))
+            else:
+                return error_response("User not found!")
+        except Error as e:
+            return error_response
 
-# update user
-# @api_view(['PATCH'])
-# def update_user(request: HttpRequest, id: int):
-#    return Response(f"Hello, user {id} updated!")
 
 # delete user
-# @api_view(['DELETE'])
-# def delete_user(request: HttpRequest, id: int):
-#    return Response(f"Hello, user {id} deleted!")
+@api_view(["DELETE"])
+def delete_user(request: HttpRequest, id: int):
+    query = "DELETE FROM users WHERE id = %s RETURNING id;"
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(query, id)
+            user = cursor.fetchone()
+            if user:
+                return Response(to_json(models.response(success=True)))
+            else:
+                return error_response("User not found!")
+        except Error as e:
+            return Response({"error": str(e)}, status=500)
 
-# Auth
+
+# patch user
+# @api_view(["PATCH"])
+# def update_user(request: HttpRequest, id: int):
+#     data = request.data
+#     query = """
+#     UPDATE users
+#     SET title = %s, description = %s, email = %s, phone = %s
+#     WHERE id = %s
+#     RETURNING *;
+#     """
+#     values = (
+#         data.get("title"),
+#         data.get("description"),
+#         data.get("email"),
+#         data.get("phone"),
+#         id,
+#     )
+
+#     with connection.cursor() as cursor:
+#         try:
+#             cursor.execute(query, values)
+#             user = cursor.fetchone()
+#             if user:
+#                 return Response(user)
+#             else:
+#                 return Response({"error": "User not found"}, status=404)
+#         except DatabaseError as e:
+#             return Response({"error": str(e)}, status=500)
 
 
 # login
