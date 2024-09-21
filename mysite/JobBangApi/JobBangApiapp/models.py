@@ -2,70 +2,41 @@ from django.db import models
 
 
 class user(models.Model):
-    _id = models.IntegerField(null=True, unique=True)
-    email = models.TextField(
-        null=True,
-    )
-    hash = models.TextField(
-        null=True,
-    )
-    firstname = models.TextField(
-        null=True,
-    )
-    lastname = models.TextField(
-        null=True,
-    )
-    is_candidate = models.BooleanField(
-        null=True,
-    )
+    email = models.TextField(unique=True)
+    hash = models.TextField()
+    firstname = models.TextField()
+    lastname = models.TextField()
+    is_candidate = models.BooleanField()
 
 
 class candidate_info(models.Model):
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         user,
-        to_field="_id",
         on_delete=models.CASCADE,
         unique=True,
-        null=True,
     )
-    info = models.TextField(
-        null=True,
-    )
+    info = models.TextField(null=True, blank=True)
     # more field later :)
 
 
 class employer_info(models.Model):
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         user,
-        to_field="_id",
         on_delete=models.CASCADE,
         unique=True,
-        null=True,
     )
-    company_name = models.TextField(
-        null=True,
-    )
+    company_name = models.TextField(null=True, blank=True)
     # more field later :)
 
 
 class offer(models.Model):
-    title = models.TextField(
-        null=True,
-    )
-    description = models.TextField(
-        null=True,
-    )
-    email = models.TextField(
-        null=True,
-    )
-    phone = models.TextField(
-        null=True,
-    )
-    employer_id = models.ForeignKey(
+    title = models.TextField()
+    description = models.TextField()
+    email = models.TextField()
+    phone = models.TextField()
+    employer = models.ForeignKey(
         employer_info,
-        to_field="user_id",
         on_delete=models.CASCADE,
-        null=True,
     )
 
 
