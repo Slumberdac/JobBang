@@ -86,7 +86,7 @@ DATABASES = {
         "NAME": "jobbang",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "localhost",
+        "HOST": "jobbang.cho800msiyxo.us-east-1.rds.amazonaws.com",
         "PORT": "5432",
     },
     # PostgreSQL db
